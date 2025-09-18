@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title>RAG QA Chat</title>
+    <style>
+        body { background-color: lightgray; font-family: Arial, sans-serif; }
+        h1 { color: red; }
+        form { margin-bottom: 20px; }
+        input[type="text"] { width: 300px; padding: 10px; }
+        input[type="submit"] {color:red; padding: 10px 15px; }
+        h2, h3 { color: red; }
+        p, ul { color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to RAG QA Chat!!</h1>
+    <h2>Ask a Question</h2>
+    <form action="/answer" method="post">
+        <input type="text" name="question" required value="{{ question | default('') }}">
+        <input type="submit" value="Ask">
+    </form>
+
+    {% if answer %}
+        <h3>Answer:</h3>
+        <p>{{ answer }}</p>
+    {% endif %}
+
+    {% if chat_history %}
+        <h3>Chat History:</h3>
+        <ul>
+            {% for q, a in chat_history %}
+                <li><strong>{{ q }}</strong>: {{ a }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
