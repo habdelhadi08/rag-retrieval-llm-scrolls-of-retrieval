@@ -29,7 +29,7 @@ jobs:
     - name: Lint with flake8
       run: |
         pip install flake8
-        flake8 src/ || true
+        flake8 src/ || exit 0
        
 
     # 3️⃣ Set up Docker Buildx
