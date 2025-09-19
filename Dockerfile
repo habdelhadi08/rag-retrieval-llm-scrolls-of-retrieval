@@ -4,27 +4,21 @@ FROM python:3.10-slim
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy templates directory
-COPY . .
-
-
-# Install sqlite3 and system dependencies
+# Install system dependencies (sqlite3 + gcc for some Python libs)
 RUN apt-get update && \
-    apt-get install -y sqlite3 && \
+    apt-get install -y sqlite3 gcc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Install Python dependencies first (better caching)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all project files
+# Copy the rest of the project files
 COPY . .
 
-# Expose port FastAPI will run on
+# Expose FastAPI port
 EXPOSE 8000
 
-# Start the FastAPI app
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-
-
+# Start the FastAPI app (production mode, no reload)
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
