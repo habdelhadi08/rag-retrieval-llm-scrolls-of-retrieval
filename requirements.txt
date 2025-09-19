@@ -1,0 +1,41 @@
+# Modular LangChain packages (DO NOT install old langchain==0.0.210)
+langchain-core
+langchain-community
+langchain-huggingface
+
+# Embeddings and vector store
+sentence-transformers
+faiss-cpu
+
+# LLMs and transformers
+transformers
+torch
+
+# Web API
+fastapi
+uvicorn
+
+# Environment variables
+python-dotenv
+
+# Wikipedia (optional, if used in code)
+wikipedia
+# requirements-dev.txt
+flake8
+
+ 
+python-multipart==0.0.20
+
+# Database
+sqlalchemy
+
+
+redis
+
+
+
+
+
+
+
+
