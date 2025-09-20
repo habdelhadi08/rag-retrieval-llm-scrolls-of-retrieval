@@ -50,9 +50,8 @@ jobs:
     # 5️⃣ Build and Push Docker Image
     - name: Build and push Docker image
       run: |
-        IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/my-fastapi-app:latest
+        IMAGE_NAME=ghcr.io/habdelhadi08/rag-retrieval-llm-scrolls-of-retrieval:latest
         docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
-
 
     
