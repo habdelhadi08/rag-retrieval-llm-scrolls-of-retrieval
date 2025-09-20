@@ -5,10 +5,11 @@ on:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions UI
 
 permissions:
-  contents: read
-  packages: write
+  contents: read   # Needed to checkout repo
+  packages: write  # Needed to push images to GHCR
 
 jobs:
   build-and-deploy:
@@ -34,7 +35,7 @@ jobs:
       run: |
         pip install flake8
         flake8 src/ || exit 0
-       
+
     # 3️⃣ Set up Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -43,16 +44,18 @@ jobs:
     - name: Log in to GHCR
       uses: docker/login-action@v2
       with:
-          registry: ghcr.io
-          username: habdelhadi08
-          password: ${{ secrets.GHCR_PAT }}
-
+        registry: ghcr.io
+        username: habdelhadi08
+        password: ${{ secrets.GHCR_PAT }}
 
     # 5️⃣ Build and Push Docker Image
     - name: Build and push Docker image
       run: |
-        IMAGE_NAME=ghcr.io/habdelhadi08/rag-retrieval-llm-scrolls-of-retrieval:latest
-        docker build -t $IMAGE_NAME .
-        docker push $IMAGE_NAME
+        IMAGE_NAME=ghcr.io/habdelhadi08/rag-retrieval-llm-scrolls-of-retrieval
+        # Tag with latest and commit SHA
+        docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} .
+        # Push all tags
+        docker push $IMAGE_NAME --all-tags
+
 
     
