@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Head
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session, selectinload
-
+from fastapi import Query
 from src.database.database import Base, engine, get_db
 from src.models import ChatHistory
 from src.api.generation import load_vectorstore, create_qa_chain
@@ -21,8 +21,8 @@ API_KEY = "mysecretkey123"
 # Connect to Redis (adjust host/port if needed)
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
-async def verify_api_key(x_api_key: str = Header(...)):
-    if x_api_key != API_KEY:
+async def verify_api_key(api_key: str = Query(...)):
+    if api_key != API_KEY:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid or missing API Key")
 
 @app.on_event("startup")
