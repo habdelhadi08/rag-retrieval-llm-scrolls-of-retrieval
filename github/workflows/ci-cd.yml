@@ -52,10 +52,13 @@ jobs:
     - name: Build and push Docker image
       run: |
         IMAGE_NAME=ghcr.io/habdelhadi08/rag-retrieval-llm-scrolls-of-retrieval
-        # Tag with latest and commit SHA
+        # Build image with both latest and commit SHA tags
         docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:${{ github.sha }} .
-        # Push all tags
-        docker push $IMAGE_NAME --all-tags
+        # Push the tags separately
+        docker push $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:${{ github.sha }}
+
+
 
 
 
